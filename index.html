@@ -439,128 +439,76 @@ tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: var(--card-hover); }
 th { background: var(--light); }
 
-/* ===== FLOWCHART ===== */
-.flowchart {
+/* ===== DECISION TREE ===== */
+.decision-tree {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 0;
   margin: 20px 0;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
 }
-.flow-row {
+.dt-node {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  position: relative;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 6px 0;
 }
-.flow-box {
-  background: var(--card);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 18px;
-  text-align: center;
-  min-width: 120px;
-  max-width: 200px;
-  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
-  line-height: 1.5;
-}
-.flow-box.start {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-.flow-box.decision {
-  border-style: dashed;
-  border-color: var(--purple);
-  background: var(--card);
-}
-.flow-box.result {
-  font-weight: 600;
-}
-.flow-box.result.konv { border-color: var(--green); }
-.flow-box.result.div { border-color: var(--red); }
-.flow-box.result.mutlak { border-color: var(--green); background: #eaf5ea; }
-.dark .flow-box.result.mutlak { background: #0f2a0f; }
-.flow-box.result.syarat { border-color: var(--orange); background: #fef9e7; }
-.dark .flow-box.result.syarat { background: #2a2010; }
-.flow-box.test {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-.dark .flow-box.test { color: #1a1f2e; }
-
-.flow-arrow {
-  color: var(--text-secondary);
-  font-size: 1.2rem;
+.dt-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-}
-.flow-label {
   font-size: 0.7rem;
-  color: var(--text-secondary);
-  text-align: center;
+  font-weight: 700;
   margin-top: 2px;
 }
-.flow-branch {
+.dt-icon.start { background: var(--accent); color: white; }
+.dt-icon.q { background: var(--purple); color: white; }
+.dt-icon.ok { background: var(--green); color: white; }
+.dt-icon.fail { background: var(--red); color: white; }
+.dt-icon.warn { background: var(--orange); color: white; }
+.dt-icon.action { background: var(--primary); color: white; }
+.dark .dt-icon.action { color: #1a1f2e; }
+.dt-body { flex: 1; min-width: 0; }
+.dt-body strong { display: block; margin-bottom: 2px; }
+.dt-body .desc { font-size: 0.78rem; color: var(--text-secondary); }
+.dt-branches {
+  margin-left: 44px;
+  border-left: 2px solid var(--border);
+  padding-left: 16px;
+}
+.dt-branch {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 4px 0;
 }
-.flow-connector {
-  width: 2px;
-  height: 24px;
-  background: var(--border);
-  flex-shrink: 0;
-}
-.flow-split {
-  display: flex;
-  gap: 24px;
-  justify-content: center;
-  flex-wrap: wrap;
-  position: relative;
-  padding-top: 8px;
-}
-.flow-split::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 2px;
-  height: 8px;
-  background: var(--border);
-}
-.flow-split-arm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  position: relative;
-}
-.flow-split-arm::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  width: calc(50% + 12px);
-  height: 2px;
-  background: var(--border);
-}
-.flow-split-arm:first-child::before { right: 0; }
-.flow-split-arm:last-child::before { left: 0; }
-.flow-split-label {
-  font-size: 0.68rem;
-  color: var(--purple);
-  font-weight: 600;
+.dt-branch-label {
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
+  min-width: 36px;
+  padding-top: 2px;
 }
-.flow-split-label.no { color: var(--red); }
-.flow-split-label.yes { color: var(--green); }
+.dt-branch-label.y { color: var(--green); }
+.dt-branch-label.n { color: var(--red); }
+.dt-branch-body { flex: 1; min-width: 0; }
+.dt-outcome {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+.dt-outcome.konv { background: #eaf5ea; color: #166534; }
+.dark .dt-outcome.konv { background: #0f2a0f; color: #68d391; }
+.dt-outcome.div { background: #fef2f2; color: #991b1b; }
+.dark .dt-outcome.div { background: #2e0a0a; color: #fc8181; }
+.dt-outcome.syarat { background: #fef9e7; color: #92400e; }
+.dark .dt-outcome.syarat { background: #2a2010; color: #f6ad55; }
+.dt-outcome.gagal { background: var(--light); color: var(--text-secondary); }
 
 /* ===== COPY CODE ===== */
 .code-block { position: relative; }
@@ -725,16 +673,6 @@ th { background: var(--light); }
   thead th, tbody td { padding: 6px 10px; }
   .search-overlay { padding-top: 10vh; }
 
-  /* Flowchart mobile: simplify layout */
-  .flowchart { font-size: 0.72rem; }
-  .flow-box { min-width: 80px; max-width: 140px; padding: 6px 10px; }
-  .flow-box.start { font-size: 0.8rem; }
-  .flow-box.test { font-size: 0.72rem; }
-  .flow-box.decision { font-size: 0.7rem; }
-  .flow-split { gap: 8px; }
-  .flow-split-arm::before { display: none; }
-  .flow-split-label { font-size: 0.6rem; }
-  .flow-box.result { font-size: 0.72rem; }
 }
 @media (max-width: 480px) {
   .hero { margin: 16px 0 24px; padding: 20px 16px; }
@@ -1329,160 +1267,163 @@ th { background: var(--light); }
 
       <h3 id="s3-11">3.11 Diagram Alir Pemilihan Uji</h3>
       <p>Mulai dari kotak START, ikuti cabang sesuai bentuk deret Anda:</p>
-      <div class="flowchart">
+      <div class="decision-tree">
 
-        <!-- START -->
-        <div class="flow-box start">Deret \(\sum a_n\)</div>
+        <div class="dt-node">
+          <div class="dt-icon start">S</div>
+          <div class="dt-body"><strong>Deret \(\sum a_n\)</strong></div>
+        </div>
 
-        <div class="flow-connector"></div>
+        <div class="dt-branches">
 
-        <!-- Cek 1: Kedivergenan -->
-        <div class="flow-box decision">\(\displaystyle\lim a_n \neq 0\)?</div>
-        <div class="flow-split">
-          <div class="flow-split-arm">
-            <div class="flow-split-label yes">YA</div>
-            <div class="flow-connector"></div>
-            <div class="flow-box result div" style="border-color:var(--red)"><strong style="color:var(--red)">Divergen</strong><br><span style="font-size:0.75rem">(Uji Kedivergenan)</span></div>
+          <div class="dt-node">
+            <div class="dt-icon q">?</div>
+            <div class="dt-body">
+              <strong>\(\displaystyle\lim_{n\to\infty} a_n \neq 0\)?</strong>
+              <div class="desc">Uji Kedivergenan — langkah termurah, cek ini dulu</div>
+            </div>
           </div>
-          <div class="flow-split-arm">
-            <div class="flow-split-label no">TIDAK</div>
-            <div class="flow-connector"></div>
+          <div class="dt-branches">
+            <div class="dt-branch">
+              <div class="dt-branch-label y">YA</div>
+              <div class="dt-branch-body"><span class="dt-outcome div">Divergen</span></div>
+            </div>
+            <div class="dt-branch">
+              <div class="dt-branch-label n">TIDAK</div>
+              <div class="dt-branch-body">
 
-            <!-- Cek 2: Bentuk khusus -->
-            <div class="flow-box decision">Bentuk deret khusus?</div>
-            <div class="flow-split">
-              <div class="flow-split-arm">
-                <div class="flow-split-label yes">YA</div>
-                <div class="flow-connector"></div>
-                <div class="flow-branch">
-                  <div class="flow-box test">\(1/n^p\)</div>
-                  <div class="flow-box result konv" style="font-size:0.78rem">\(p>1\): <strong style="color:var(--green)">Konvergen</strong><br>\(p\le1\): <strong style="color:var(--red)">Divergen</strong></div>
-                  <div style="height:8px"></div>
-                  <div class="flow-box test">\(ar^{n-1}\)</div>
-                  <div class="flow-box result konv" style="font-size:0.78rem">\(|r|&lt;1\): <strong style="color:var(--green)">Konvergen</strong><br>\(|r|\ge1\): <strong style="color:var(--red)">Divergen</strong></div>
-                </div>
-              </div>
-              <div class="flow-split-arm">
-                <div class="flow-split-label no">TIDAK</div>
-                <div class="flow-connector"></div>
-
-                <!-- Cek 3: Ganti tanda -->
-                <div class="flow-box decision">Ada \((-1)^n\)?</div>
-                <div class="flow-split">
-                  <div class="flow-split-arm">
-                    <div class="flow-split-label yes">YA</div>
-                    <div class="flow-connector"></div>
-                    <div class="flow-branch">
-                      <div class="flow-box test">Cek \(\sum|a_n|\)</div>
-                      <div class="flow-connector"></div>
-                      <div class="flow-split">
-                        <div class="flow-split-arm">
-                          <div class="flow-split-label yes" style="color:var(--green)">Konv</div>
-                          <div class="flow-box result mutlak"><strong style="color:var(--green)">Konvergen Mutlak</strong></div>
-                        </div>
-                        <div class="flow-split-arm">
-                          <div class="flow-split-label no" style="color:var(--orange)">Div</div>
-                          <div class="flow-connector"></div>
-                          <div class="flow-box test">Uji Leibniz</div>
-                          <div class="flow-connector"></div>
-                          <div class="flow-split">
-                            <div class="flow-split-arm">
-                              <div class="flow-split-label yes" style="font-size:0.6rem">\(b_n\downarrow0\)</div>
-                              <div class="flow-box result syarat"><strong style="color:var(--orange)">Konvergen Bersyarat</strong></div>
-                            </div>
-                            <div class="flow-split-arm">
-                              <div class="flow-split-label no" style="font-size:0.6rem">Tidak</div>
-                              <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flow-split-arm">
-                    <div class="flow-split-label no">TIDAK</div>
-                    <div class="flow-connector"></div>
-
-                    <!-- Cek 4: Faktorial / pangkat -->
-                    <div class="flow-box decision">Ada faktorial atau \(r^n\)?</div>
-                    <div class="flow-split">
-                      <div class="flow-split-arm">
-                        <div class="flow-split-label yes">YA</div>
-                        <div class="flow-box test">Uji Rasio</div>
-                        <div class="flow-connector"></div>
-                        <div class="flow-split">
-                          <div class="flow-split-arm">
-                            <div class="flow-split-label yes" style="color:var(--green)">\(L&lt;1\)</div>
-                            <div class="flow-box result konv"><strong style="color:var(--green)">Konvergen</strong></div>
-                          </div>
-                          <div class="flow-split-arm">
-                            <div class="flow-split-label no" style="color:var(--red)">\(L&gt;1\)</div>
-                            <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="flow-split-arm">
-                        <div class="flow-split-label no">TIDAK</div>
-                        <div class="flow-connector"></div>
-
-                        <!-- Cek 5: Bentuk pangkat-n -->
-                        <div class="flow-box decision">Bentuk \((b_n)^n\)?</div>
-                        <div class="flow-split">
-                          <div class="flow-split-arm">
-                            <div class="flow-split-label yes">YA</div>
-                            <div class="flow-box test">Uji Akar</div>
-                            <div class="flow-connector"></div>
-                            <div class="flow-split">
-                              <div class="flow-split-arm">
-                                <div class="flow-split-label yes" style="color:var(--green)">\(L&lt;1\)</div>
-                                <div class="flow-box result konv"><strong style="color:var(--green)">Konvergen</strong></div>
-                              </div>
-                              <div class="flow-split-arm">
-                                <div class="flow-split-label no" style="color:var(--red)">\(L&gt;1\)</div>
-                                <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="flow-split-arm">
-                            <div class="flow-split-label no">TIDAK</div>
-                            <div class="flow-connector"></div>
-
-                            <!-- Cek 6: Integral -->
-                            <div class="flow-box decision">\(f(x)\) positif, menurun, integral mudah?</div>
-                            <div class="flow-split">
-                              <div class="flow-split-arm">
-                                <div class="flow-split-label yes">YA</div>
-                                <div class="flow-box test">Uji Integral</div>
-                                <div class="flow-connector"></div>
-                                <div class="flow-split">
-                                  <div class="flow-split-arm">
-                                    <div class="flow-split-label yes" style="color:var(--green)">Konv</div>
-                                    <div class="flow-box result konv"><strong style="color:var(--green)">Konvergen</strong></div>
-                                  </div>
-                                  <div class="flow-split-arm">
-                                    <div class="flow-split-label no" style="color:var(--red)">Div</div>
-                                    <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="flow-split-arm">
-                                <div class="flow-split-label no" style="font-size:0.65rem">TIDAK</div>
-                                <div class="flow-connector"></div>
-                                <div class="flow-box result" style="border-color:var(--orange);background:var(--card)">
-                                  <strong style="color:var(--orange)">Banding Langsung</strong><br>
-                                  <span style="font-size:0.72rem">atau coba Banding Limit</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div class="dt-node">
+                  <div class="dt-icon q">?</div>
+                  <div class="dt-body">
+                    <strong>Bentuk deret khusus?</strong>
+                    <div class="desc">Geometric / p-series / Harmonik / Teleskopik</div>
                   </div>
                 </div>
+                <div class="dt-branches">
+                  <div class="dt-branch">
+                    <div class="dt-branch-label y">YA</div>
+                    <div class="dt-branch-body">
+                      <strong>\(1/n^p\):</strong> <span class="dt-outcome konv">\(p&gt;1\) Konv</span> <span class="dt-outcome div">\(p\le 1\) Div</span><br>
+                      <strong>\(ar^{n-1}\):</strong> <span class="dt-outcome konv">\(|r|&lt;1\) Konv</span> <span class="dt-outcome div">\(|r|\ge 1\) Div</span>
+                    </div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-branch-label n">TIDAK</div>
+                    <div class="dt-branch-body">
+
+                      <div class="dt-node">
+                        <div class="dt-icon q">?</div>
+                        <div class="dt-body">
+                          <strong>Ada \((-1)^n\)?</strong>
+                          <div class="desc">Deret ganti tanda → cek konvergensi mutlak dulu</div>
+                        </div>
+                      </div>
+                      <div class="dt-branches">
+                        <div class="dt-branch">
+                          <div class="dt-branch-label y">YA</div>
+                          <div class="dt-branch-body">
+                            <strong>Cek \(\sum|a_n|\):</strong><br>
+                            <span class="dt-outcome konv">Konvergen Mutlak</span>
+                            <span style="margin:0 6px;color:var(--text-secondary)">→ selesai</span><br>
+                            <span class="dt-outcome div">Divergen</span>
+                            <span style="margin:0 6px;color:var(--text-secondary)">→ lanjut ke Uji Leibniz</span><br>
+                            &nbsp;&nbsp;\(b_n\downarrow 0\)?
+                            <span class="dt-outcome syarat">Konvergen Bersyarat</span>
+                            <span style="margin:0 4px;color:var(--text-secondary)">/</span>
+                            <span class="dt-outcome div">Divergen</span>
+                          </div>
+                        </div>
+                        <div class="dt-branch">
+                          <div class="dt-branch-label n">TIDAK</div>
+                          <div class="dt-branch-body">
+
+                            <div class="dt-node">
+                              <div class="dt-icon q">?</div>
+                              <div class="dt-body">
+                                <strong>Ada faktorial atau \(r^n\)?</strong>
+                                <div class="desc">Gunakan Uji Rasio</div>
+                              </div>
+                            </div>
+                            <div class="dt-branches">
+                              <div class="dt-branch">
+                                <div class="dt-branch-label y">YA</div>
+                                <div class="dt-branch-body">
+                                  <strong>Uji Rasio:</strong>
+                                  <span class="dt-outcome konv">\(L&lt;1\) Konv</span>
+                                  <span class="dt-outcome div">\(L&gt;1\) Div</span>
+                                  <span class="dt-outcome gagal">\(L=1\) Gagal</span>
+                                </div>
+                              </div>
+                              <div class="dt-branch">
+                                <div class="dt-branch-label n">TIDAK</div>
+                                <div class="dt-branch-body">
+
+                                  <div class="dt-node">
+                                    <div class="dt-icon q">?</div>
+                                    <div class="dt-body">
+                                      <strong>Bentuk \((b_n)^n\)?</strong>
+                                      <div class="desc">Gunakan Uji Akar</div>
+                                    </div>
+                                  </div>
+                                  <div class="dt-branches">
+                                    <div class="dt-branch">
+                                      <div class="dt-branch-label y">YA</div>
+                                      <div class="dt-branch-body">
+                                        <strong>Uji Akar:</strong>
+                                        <span class="dt-outcome konv">\(L&lt;1\) Konv</span>
+                                        <span class="dt-outcome div">\(L&gt;1\) Div</span>
+                                        <span class="dt-outcome gagal">\(L=1\) Gagal</span>
+                                      </div>
+                                    </div>
+                                    <div class="dt-branch">
+                                      <div class="dt-branch-label n">TIDAK</div>
+                                      <div class="dt-branch-body">
+
+                                        <div class="dt-node">
+                                          <div class="dt-icon q">?</div>
+                                          <div class="dt-body">
+                                            <strong>\(f(x)\) positif, menurun, integral mudah?</strong>
+                                            <div class="desc">Gunakan Uji Integral</div>
+                                          </div>
+                                        </div>
+                                        <div class="dt-branches">
+                                          <div class="dt-branch">
+                                            <div class="dt-branch-label y">YA</div>
+                                            <div class="dt-branch-body">
+                                              <span class="dt-outcome konv">Konvergen</span>
+                                              <span class="dt-outcome div">Divergen</span>
+                                            </div>
+                                          </div>
+                                          <div class="dt-branch">
+                                            <div class="dt-branch-label n">TIDAK</div>
+                                            <div class="dt-branch-body">
+                                              <span class="dt-outcome syarat">Banding Langsung</span>
+                                              <span style="margin:0 6px;color:var(--text-secondary)">atau</span>
+                                              <span class="dt-outcome syarat">Banding Limit</span>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
