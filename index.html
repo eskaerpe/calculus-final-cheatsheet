@@ -439,76 +439,20 @@ tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: var(--card-hover); }
 th { background: var(--light); }
 
-/* ===== DECISION TREE ===== */
-.decision-tree {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: 20px 0;
-  font-size: 0.85rem;
+/* ===== TREE (pseudocode) ===== */
+.tree-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 16px 0;
+  font-size: 0.88rem;
+  line-height: 2;
+  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
-.dt-node {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 6px 0;
-}
-.dt-icon {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-size: 0.7rem;
-  font-weight: 700;
-  margin-top: 2px;
-}
-.dt-icon.start { background: var(--accent); color: white; }
-.dt-icon.q { background: var(--purple); color: white; }
-.dt-icon.ok { background: var(--green); color: white; }
-.dt-icon.fail { background: var(--red); color: white; }
-.dt-icon.warn { background: var(--orange); color: white; }
-.dt-icon.action { background: var(--primary); color: white; }
-.dark .dt-icon.action { color: #1a1f2e; }
-.dt-body { flex: 1; min-width: 0; }
-.dt-body strong { display: block; margin-bottom: 2px; }
-.dt-body .desc { font-size: 0.78rem; color: var(--text-secondary); }
-.dt-branches {
-  margin-left: 44px;
-  border-left: 2px solid var(--border);
-  padding-left: 16px;
-}
-.dt-branch {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 4px 0;
-}
-.dt-branch-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
-  min-width: 36px;
-  padding-top: 2px;
-}
-.dt-branch-label.y { color: var(--green); }
-.dt-branch-label.n { color: var(--red); }
-.dt-branch-body { flex: 1; min-width: 0; }
-.dt-outcome {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.82rem;
-}
-.dt-outcome.konv { background: #eaf5ea; color: #166534; }
-.dark .dt-outcome.konv { background: #0f2a0f; color: #68d391; }
-.dt-outcome.div { background: #fef2f2; color: #991b1b; }
-.dark .dt-outcome.div { background: #2e0a0a; color: #fc8181; }
-.dt-outcome.syarat { background: #fef9e7; color: #92400e; }
-.dark .dt-outcome.syarat { background: #2a2010; color: #f6ad55; }
-.dt-outcome.gagal { background: var(--light); color: var(--text-secondary); }
+.tree-box .node { display: block; padding: 2px 0; }
+.tree-box .branch { padding-left: 28px; border-left: 2px solid var(--accent); margin-left: 8px; }
+.tree-box .leaf { color: var(--accent); font-weight: 600; }
 
 /* ===== COPY CODE ===== */
 .code-block { position: relative; }
@@ -1265,165 +1209,19 @@ th { background: var(--light); }
         </ul>
       </div>
 
-      <h3 id="s3-11">3.11 Diagram Alir Pemilihan Uji</h3>
-      <p>Mulai dari kotak START, ikuti cabang sesuai bentuk deret Anda:</p>
-      <div class="decision-tree">
-
-        <div class="dt-node">
-          <div class="dt-icon start">S</div>
-          <div class="dt-body"><strong>Deret \(\sum a_n\)</strong></div>
-        </div>
-
-        <div class="dt-branches">
-
-          <div class="dt-node">
-            <div class="dt-icon q">?</div>
-            <div class="dt-body">
-              <strong>\(\displaystyle\lim_{n\to\infty} a_n \neq 0\)?</strong>
-              <div class="desc">Uji Kedivergenan — langkah termurah, cek ini dulu</div>
-            </div>
-          </div>
-          <div class="dt-branches">
-            <div class="dt-branch">
-              <div class="dt-branch-label y">YA</div>
-              <div class="dt-branch-body"><span class="dt-outcome div">Divergen</span></div>
-            </div>
-            <div class="dt-branch">
-              <div class="dt-branch-label n">TIDAK</div>
-              <div class="dt-branch-body">
-
-                <div class="dt-node">
-                  <div class="dt-icon q">?</div>
-                  <div class="dt-body">
-                    <strong>Bentuk deret khusus?</strong>
-                    <div class="desc">Geometric / p-series / Harmonik / Teleskopik</div>
-                  </div>
-                </div>
-                <div class="dt-branches">
-                  <div class="dt-branch">
-                    <div class="dt-branch-label y">YA</div>
-                    <div class="dt-branch-body">
-                      <strong>\(1/n^p\):</strong> <span class="dt-outcome konv">\(p&gt;1\) Konv</span> <span class="dt-outcome div">\(p\le 1\) Div</span><br>
-                      <strong>\(ar^{n-1}\):</strong> <span class="dt-outcome konv">\(|r|&lt;1\) Konv</span> <span class="dt-outcome div">\(|r|\ge 1\) Div</span>
-                    </div>
-                  </div>
-                  <div class="dt-branch">
-                    <div class="dt-branch-label n">TIDAK</div>
-                    <div class="dt-branch-body">
-
-                      <div class="dt-node">
-                        <div class="dt-icon q">?</div>
-                        <div class="dt-body">
-                          <strong>Ada \((-1)^n\)?</strong>
-                          <div class="desc">Deret ganti tanda → cek konvergensi mutlak dulu</div>
-                        </div>
-                      </div>
-                      <div class="dt-branches">
-                        <div class="dt-branch">
-                          <div class="dt-branch-label y">YA</div>
-                          <div class="dt-branch-body">
-                            <strong>Cek \(\sum|a_n|\):</strong><br>
-                            <span class="dt-outcome konv">Konvergen Mutlak</span>
-                            <span style="margin:0 6px;color:var(--text-secondary)">→ selesai</span><br>
-                            <span class="dt-outcome div">Divergen</span>
-                            <span style="margin:0 6px;color:var(--text-secondary)">→ lanjut ke Uji Leibniz</span><br>
-                            &nbsp;&nbsp;\(b_n\downarrow 0\)?
-                            <span class="dt-outcome syarat">Konvergen Bersyarat</span>
-                            <span style="margin:0 4px;color:var(--text-secondary)">/</span>
-                            <span class="dt-outcome div">Divergen</span>
-                          </div>
-                        </div>
-                        <div class="dt-branch">
-                          <div class="dt-branch-label n">TIDAK</div>
-                          <div class="dt-branch-body">
-
-                            <div class="dt-node">
-                              <div class="dt-icon q">?</div>
-                              <div class="dt-body">
-                                <strong>Ada faktorial atau \(r^n\)?</strong>
-                                <div class="desc">Gunakan Uji Rasio</div>
-                              </div>
-                            </div>
-                            <div class="dt-branches">
-                              <div class="dt-branch">
-                                <div class="dt-branch-label y">YA</div>
-                                <div class="dt-branch-body">
-                                  <strong>Uji Rasio:</strong>
-                                  <span class="dt-outcome konv">\(L&lt;1\) Konv</span>
-                                  <span class="dt-outcome div">\(L&gt;1\) Div</span>
-                                  <span class="dt-outcome gagal">\(L=1\) Gagal</span>
-                                </div>
-                              </div>
-                              <div class="dt-branch">
-                                <div class="dt-branch-label n">TIDAK</div>
-                                <div class="dt-branch-body">
-
-                                  <div class="dt-node">
-                                    <div class="dt-icon q">?</div>
-                                    <div class="dt-body">
-                                      <strong>Bentuk \((b_n)^n\)?</strong>
-                                      <div class="desc">Gunakan Uji Akar</div>
-                                    </div>
-                                  </div>
-                                  <div class="dt-branches">
-                                    <div class="dt-branch">
-                                      <div class="dt-branch-label y">YA</div>
-                                      <div class="dt-branch-body">
-                                        <strong>Uji Akar:</strong>
-                                        <span class="dt-outcome konv">\(L&lt;1\) Konv</span>
-                                        <span class="dt-outcome div">\(L&gt;1\) Div</span>
-                                        <span class="dt-outcome gagal">\(L=1\) Gagal</span>
-                                      </div>
-                                    </div>
-                                    <div class="dt-branch">
-                                      <div class="dt-branch-label n">TIDAK</div>
-                                      <div class="dt-branch-body">
-
-                                        <div class="dt-node">
-                                          <div class="dt-icon q">?</div>
-                                          <div class="dt-body">
-                                            <strong>\(f(x)\) positif, menurun, integral mudah?</strong>
-                                            <div class="desc">Gunakan Uji Integral</div>
-                                          </div>
-                                        </div>
-                                        <div class="dt-branches">
-                                          <div class="dt-branch">
-                                            <div class="dt-branch-label y">YA</div>
-                                            <div class="dt-branch-body">
-                                              <span class="dt-outcome konv">Konvergen</span>
-                                              <span class="dt-outcome div">Divergen</span>
-                                            </div>
-                                          </div>
-                                          <div class="dt-branch">
-                                            <div class="dt-branch-label n">TIDAK</div>
-                                            <div class="dt-branch-body">
-                                              <span class="dt-outcome syarat">Banding Langsung</span>
-                                              <span style="margin:0 6px;color:var(--text-secondary)">atau</span>
-                                              <span class="dt-outcome syarat">Banding Limit</span>
-                                            </div>
-                                          </div>
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
+      <h3 id="s3-11">3.11 Strategi Pemilihan Uji</h3>
+      <p>Urutan langkah dari yang paling cepat ke paling detail:</p>
+      <div class="tree-box">
+        <span class="node">Deret \(\sum a_n\)</span>
+        <div class="branch">
+          <span class="node">&#8627; \(\lim a_n \neq 0\)? &rarr; <span class="leaf">Divergen (Kedivergenan)</span></span>
+          <span class="node">&#8627; Bentuk \(1/n^p\)? &rarr; <span class="leaf">Deret-p (Uji Integral)</span></span>
+          <span class="node">&#8627; Bentuk \(ar^{n-1}\)? &rarr; <span class="leaf">Deret Geometri</span></span>
+          <span class="node">&#8627; Ada \((-1)^n\)? &rarr; <span class="leaf">Leibniz + cek mutlak</span></span>
+          <span class="node">&#8627; Ada faktorial/\(r^n\)? &rarr; <span class="leaf">Uji Rasio</span></span>
+          <span class="node">&#8627; Bentuk \((b_n)^n\)? &rarr; <span class="leaf">Uji Akar</span></span>
+          <span class="node">&#8627; f positif, menurun, integral mudah? &rarr; <span class="leaf">Uji Integral</span></span>
+          <span class="node">&#8627; Fungsi rasional/aljabar? &rarr; <span class="leaf">Banding Langsung / Banding Limit</span></span>
         </div>
       </div>
 
