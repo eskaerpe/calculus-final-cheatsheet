@@ -439,20 +439,128 @@ tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: var(--card-hover); }
 th { background: var(--light); }
 
-/* ===== DECISION TREE ===== */
-.tree-box {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 18px 22px;
-  margin: 16px 0;
-  font-size: 0.88rem;
-  line-height: 2;
-  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+/* ===== FLOWCHART ===== */
+.flowchart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 20px 0;
+  font-size: 0.82rem;
 }
-.tree-box .node { display: block; padding: 2px 0; }
-.tree-box .branch { padding-left: 28px; border-left: 2px solid var(--accent); margin-left: 8px; }
-.tree-box .leaf { color: var(--accent); font-weight: 600; }
+.flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+}
+.flow-box {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 18px;
+  text-align: center;
+  min-width: 120px;
+  max-width: 200px;
+  transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  line-height: 1.5;
+}
+.flow-box.start {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.flow-box.decision {
+  border-style: dashed;
+  border-color: var(--purple);
+  background: var(--card);
+}
+.flow-box.result {
+  font-weight: 600;
+}
+.flow-box.result.konv { border-color: var(--green); }
+.flow-box.result.div { border-color: var(--red); }
+.flow-box.result.mutlak { border-color: var(--green); background: #eaf5ea; }
+.dark .flow-box.result.mutlak { background: #0f2a0f; }
+.flow-box.result.syarat { border-color: var(--orange); background: #fef9e7; }
+.dark .flow-box.result.syarat { background: #2a2010; }
+.flow-box.test {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.dark .flow-box.test { color: #1a1f2e; }
+
+.flow-arrow {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.flow-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 2px;
+}
+.flow-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.flow-connector {
+  width: 2px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.flow-split {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  padding-top: 8px;
+}
+.flow-split::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  background: var(--border);
+}
+.flow-split-arm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+.flow-split-arm::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: calc(50% + 12px);
+  height: 2px;
+  background: var(--border);
+}
+.flow-split-arm:first-child::before { right: 0; }
+.flow-split-arm:last-child::before { left: 0; }
+.flow-split-label {
+  font-size: 0.68rem;
+  color: var(--purple);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.flow-split-label.no { color: var(--red); }
+.flow-split-label.yes { color: var(--green); }
 
 /* ===== COPY CODE ===== */
 .code-block { position: relative; }
@@ -616,6 +724,17 @@ th { background: var(--light); }
   table { font-size: 0.78rem; }
   thead th, tbody td { padding: 6px 10px; }
   .search-overlay { padding-top: 10vh; }
+
+  /* Flowchart mobile: simplify layout */
+  .flowchart { font-size: 0.72rem; }
+  .flow-box { min-width: 80px; max-width: 140px; padding: 6px 10px; }
+  .flow-box.start { font-size: 0.8rem; }
+  .flow-box.test { font-size: 0.72rem; }
+  .flow-box.decision { font-size: 0.7rem; }
+  .flow-split { gap: 8px; }
+  .flow-split-arm::before { display: none; }
+  .flow-split-label { font-size: 0.6rem; }
+  .flow-box.result { font-size: 0.72rem; }
 }
 @media (max-width: 480px) {
   .hero { margin: 16px 0 24px; padding: 20px 16px; }
@@ -1049,29 +1168,123 @@ th { background: var(--light); }
         <h2>Kekonvergenan Deret Tak Hingga</h2>
       </div>
 
-      <h3 id="s3-1">3.1 Konsep Dasar</h3>
+      <h3 id="s3-1">3.1 Konsep Dasar &amp; Deret Penting</h3>
       <div class="math-box">
-        \[\sum_{n=1}^{\infty} a_n,\quad S_n = \sum_{k=1}^n a_k\]
+        \[\sum_{n=1}^{\infty} a_n,\qquad S_n = \sum_{k=1}^n a_k,\qquad
+        \text{Konvergen }\iff \lim_{n\to\infty} S_n = S\text{ (berhingga)}\]
       </div>
-      <p><strong>Konvergen</strong> jika \(\lim S_n = S\) berhingga. <strong>Divergen</strong> jika tidak.</p>
 
       <div class="strategi-box">
         <strong>&#9888; Peringatan:</strong> \(\lim a_n = 0\) adalah syarat perlu, <strong>bukan</strong> syarat cukup. Contoh: \(\sum \frac1n\) divergen meski \(\frac1n\to 0\).
       </div>
 
-      <h3 id="s3-2">3.2&ndash;3.9 Ringkasan Uji Deret</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Uji</th><th>Bentuk</th><th>Kapan Dipakai</th><th>Kesimpulan</th></tr></thead>
+          <thead><tr><th>Jenis Deret</th><th>Bentuk</th><th>Rumus Jumlah</th><th>Konvergen Jika</th></tr></thead>
           <tbody>
-            <tr><td><strong>Kedivergenan</strong></td><td>\(\lim a_n \neq 0\)</td><td>Cek pertama selalu</td><td>Divergen</td></tr>
-            <tr><td><strong>Deret-p</strong></td><td>\(\sum 1/n^p\)</td><td>Bentuk persis \(1/n^p\)</td><td>Konvergen jika \(p > 1\)</td></tr>
-            <tr><td><strong>Integral</strong></td><td>\(\int f(x)\,dx\)</td><td>f positif, menurun, mudah integral</td><td>Sama dengan deret</td></tr>
-            <tr><td><strong>Banding Langsung</strong></td><td>\(a_n \le b_n\)</td><td>Suku positif, pembanding jelas</td><td>Konvergen/Divergen</td></tr>
-            <tr><td><strong>Banding Limit</strong></td><td>\(\lim a_n/b_n = c\)</td><td>Fungsi rasional/aljabar</td><td>Ekuivalen</td></tr>
-            <tr><td><strong>Leibniz</strong></td><td>\((-1)^n b_n,\; b_n\downarrow 0\)</td><td>Deret ganti tanda</td><td>Konvergen bersyarat</td></tr>
-            <tr><td><strong>Rasio</strong></td><td>\(\lim |a_{n+1}/a_n| = L\)</td><td>Faktorial, \(r^n\), kombinasi</td><td>\(L<1\) konv, \(L>1\) div</td></tr>
-            <tr><td><strong>Akar</strong></td><td>\(\lim \sqrt[n]{|a_n|} = L\)</td><td>Bentuk \((b_n)^n\)</td><td>\(L<1\) konv, \(L>1\) div</td></tr>
+            <tr><td><strong>Geometri</strong></td><td>\(\displaystyle\sum_{n=1}^{\infty} ar^{n-1}\)</td><td>\(\displaystyle S = \frac{a}{1-r}\)</td><td>\(|r| &lt; 1\)</td></tr>
+            <tr><td><strong>Deret-p</strong></td><td>\(\displaystyle\sum_{n=1}^{\infty} \frac{1}{n^p}\)</td><td>&mdash;</td><td>\(p &gt; 1\)</td></tr>
+            <tr><td><strong>Harmonik</strong></td><td>\(\displaystyle\sum_{n=1}^{\infty} \frac{1}{n}\)</td><td>&mdash;</td><td><strong>Divergen</strong> (\(p=1\))</td></tr>
+            <tr><td><strong>Teleskopis</strong></td><td>\(\displaystyle\sum_{n=1}^{\infty} \frac{1}{n(n+1)}\)</td><td>\(\displaystyle S = \lim_{N\to\infty}\!\left(1-\frac1{N+1}\right)=1\)</td><td>Konvergen (suku saling hapus)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="s3-2">3.2&ndash;3.9 Tabel Lengkap Uji Deret</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Uji</th><th>Rumus / Kondisi</th><th>Syarat Tambahan</th><th>Kapan Dipakai</th><th>Hindari Jika</th><th>Hasil</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Kedivergenan</strong></td>
+              <td>\(\displaystyle\lim_{n\to\infty} a_n \neq 0\)</td>
+              <td>Tidak ada</td>
+              <td>Cek pertama <strong>setiap</strong> deret</td>
+              <td>Tidak bisa buktikan konvergensi</td>
+              <td>\(a_n \not\to 0 \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Deret-p</strong></td>
+              <td>\(\displaystyle\sum\frac{1}{n^p}\)</td>
+              <td>\(a_n &gt; 0\)</td>
+              <td>Bentuk persis \(1/n^p\)</td>
+              <td>Pembilang \(\neq 1\) atau penyebut bukan \(n^p\) murni</td>
+              <td>\(p &gt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>\(p \le 1 \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Geometri</strong></td>
+              <td>\(\displaystyle\sum ar^{n-1}\)</td>
+              <td>\(a \neq 0\)</td>
+              <td>Bentuk \(a + ar + ar^2 + \cdots\)</td>
+              <td>Rasio tidak konstan</td>
+              <td>\(|r| &lt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen</strong> ke \(\frac{a}{1-r}\)<br>\(|r| \ge 1 \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Integral</strong></td>
+              <td>\(\displaystyle\int_1^{\infty} f(x)\,dx\)</td>
+              <td>\(f(x)\) kontinu, positif, <strong>menurun</strong> pada \([1,\infty)\)</td>
+              <td>\(a_n = f(n)\) dan \(f\) mudah diintegral</td>
+              <td>Faktorial, deret ganti tanda</td>
+              <td>Integral konvergen \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>Integral divergen \(\Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Banding Langsung</strong></td>
+              <td>\(0 \le a_n \le b_n\) atau \(a_n \ge b_n \ge 0\)</td>
+              <td>\(a_n, b_n \ge 0\)</td>
+              <td>Suku positif, pembanding jelas/ mudah</td>
+              <td>Deret ganti tanda, pembanding tidak jelas</td>
+              <td>\(a_n \le b_n,\; \sum b_n\) konv \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>\(a_n \ge b_n,\; \sum b_n\) div \(\Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Banding Limit</strong></td>
+              <td>\(\displaystyle\lim_{n\to\infty}\frac{a_n}{b_n} = c\)</td>
+              <td>\(a_n, b_n &gt; 0\); \(c \in (0,\infty)\)</td>
+              <td>Fungsi rasional/aljabar, deret dengan suku dominan jelas</td>
+              <td>\((-1)^n\) (modifikasi diperlukan)</td>
+              <td>\(0 &lt; c &lt; \infty \Rightarrow\) sama konv/div<br>\(c = 0,\; \sum b_n\) konv \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>\(c = \infty,\; \sum b_n\) div \(\Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Leibniz (Ganti Tanda)</strong></td>
+              <td>\(\displaystyle\sum(-1)^{n-1}b_n\), \(b_n &gt; 0\)</td>
+              <td>\(b_{n+1} \le b_n\) (menurun), \(\lim b_n = 0\)</td>
+              <td>Deret dengan faktor \((-1)^n\) atau \((-1)^{n+1}\)</td>
+              <td>Bukan deret ganti tanda</td>
+              <td>Kedua syarat terpenuhi \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong> (bersyarat)</td>
+            </tr>
+            <tr>
+              <td><strong>Rasio</strong></td>
+              <td>\(\displaystyle L = \lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|\)</td>
+              <td>Tidak ada (mutlak)</td>
+              <td>Faktorial \(n!\), pangkat \(r^n\), atau kombinasi keduanya</td>
+              <td>Fungsi rasional murni (selalu \(L=1\), gagal)</td>
+              <td>\(L &lt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen mutlak</strong><br>\(L &gt; 1\) atau \(\infty \Rightarrow\) <strong style="color:var(--red)">Divergen</strong><br>\(L = 1 \Rightarrow\) <strong style="color:var(--orange)">Gagal</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Akar</strong></td>
+              <td>\(\displaystyle L = \lim_{n\to\infty}\sqrt[n]{|a_n|}\)</td>
+              <td>Tidak ada (mutlak)</td>
+              <td>Seluruh \(a_n\) berbentuk \((b_n)^n\)</td>
+              <td>Bentuk bukan pangkat-n</td>
+              <td>\(L &lt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen mutlak</strong><br>\(L &gt; 1\) atau \(\infty \Rightarrow\) <strong style="color:var(--red)">Divergen</strong><br>\(L = 1 \Rightarrow\) <strong style="color:var(--orange)">Gagal</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Contoh Deret</th><th>Ciri</th><th>Uji Terbaik</th><th>Hasil</th></tr></thead>
+          <tbody>
+            <tr><td>\(\displaystyle\sum\frac{n!}{n^{100}}\)</td><td>Faktorial</td><td>Rasio</td><td>\(L = \infty \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td></tr>
+            <tr><td>\(\displaystyle\sum\frac{2^n}{n!}\)</td><td>Faktorial + pangkat</td><td>Rasio</td><td>\(L = 0 \Rightarrow\) <strong style="color:var(--green)">Konvergen mutlak</strong></td></tr>
+            <tr><td>\(\displaystyle\sum\frac{n^3}{(2n)!}\)</td><td>Faktorial</td><td>Rasio</td><td>\(L \to 0 \Rightarrow\) <strong style="color:var(--green)">Konvergen</strong></td></tr>
+            <tr><td>\(\displaystyle\sum\frac{\ln n}{n^2}\)</td><td>Log + polinom</td><td>Banding Limit (vs \(n^{-3/2}\))</td><td><strong style="color:var(--green)">Konvergen</strong></td></tr>
+            <tr><td>\(\displaystyle\sum\frac{n}{n^2-5}\)</td><td>Rasional</td><td>Banding Limit (vs \(1/n\))</td><td><strong style="color:var(--red)">Divergen</strong></td></tr>
+            <tr><td>\(\displaystyle\sum\frac{1}{n^2+1}\)</td><td>Rasional</td><td>Integral / Banding (vs \(1/n^2\))</td><td><strong style="color:var(--green)">Konvergen</strong></td></tr>
+            <tr><td>\(\displaystyle\sum\frac{1}{n\ln n}\)</td><td>Log di penyebut</td><td>Integral</td><td><strong style="color:var(--red)">Divergen</strong> (integral \(\to\infty\))</td></tr>
+            <tr><td>\(\displaystyle\sum\left(\frac{n}{2n+1}\right)^n\)</td><td>Bentuk \((b_n)^n\)</td><td>Akar</td><td>\(L = \frac12 \Rightarrow\) <strong style="color:var(--green)">Konvergen</strong></td></tr>
+            <tr><td>\(\displaystyle\sum(-1)^{n+1}\frac{n}{n^2+1}\)</td><td>Ganti tanda</td><td>Leibniz + cek mutlak</td><td>\(\sum|a_n|\) divergen, Leibniz \(\Rightarrow\) <strong style="color:var(--orange)">Konvergen bersyarat</strong></td></tr>
+            <tr><td>\(\displaystyle\sum(-1)^{n+1}\frac{n^4}{2^n}\)</td><td>Ganti tanda + pangkat</td><td>Rasio pada \(\sum|a_n|\) dulu</td><td>\(L = \frac12 \Rightarrow\) <strong style="color:var(--green)">Konvergen mutlak</strong></td></tr>
           </tbody>
         </table>
       </div>
@@ -1079,35 +1292,202 @@ th { background: var(--light); }
       <h3 id="s3-10">3.10 Konvergensi Mutlak vs. Bersyarat</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Istilah</th><th>Definisi</th></tr></thead>
+          <thead><tr><th>Istilah</th><th>Definisi</th><th>Implikasi</th><th>Contoh</th></tr></thead>
           <tbody>
-            <tr><td><strong>Konvergen Mutlak</strong></td><td>\(\sum|a_n|\) konvergen</td></tr>
-            <tr><td><strong>Konvergen Bersyarat</strong></td><td>\(\sum a_n\) konv tapi \(\sum|a_n|\) divergen</td></tr>
+            <tr>
+              <td><strong>Konvergen Mutlak</strong></td>
+              <td>\(\displaystyle\sum|a_n|\) konvergen</td>
+              <td>\(\Rightarrow \sum a_n\) konvergen (teorema)</td>
+              <td>\(\displaystyle\sum\frac{(-1)^n}{n^2}\)</td>
+            </tr>
+            <tr>
+              <td><strong>Konvergen Bersyarat</strong></td>
+              <td>\(\sum a_n\) konvergen, \(\sum|a_n|\) divergen</td>
+              <td>Hanya deret ganti tanda. Urutan penjumlahan bisa mengubah hasil!</td>
+              <td>\(\displaystyle\sum\frac{(-1)^n}{n}\)</td>
+            </tr>
+            <tr>
+              <td><strong>Divergen</strong></td>
+              <td>\(\sum a_n\) divergen</td>
+              <td>Tidak ada jumlah berhingga</td>
+              <td>\(\displaystyle\sum\frac{(-1)^n n}{n+1}\) (suku \(\not\to 0\))</td>
+            </tr>
           </tbody>
         </table>
       </div>
 
       <div class="strategi-box">
-        <strong>Strategi:</strong> (1) Periksa \(\sum|a_n|\) &rarr; jika konvergen &rarr; <strong>mutlak</strong>. (2) Jika divergen, periksa \(\sum a_n\) (Leibniz) &rarr; jika konvergen &rarr; <strong>bersyarat</strong>.
+        <strong>Strategi 3 langkah untuk deret ganti tanda:</strong><br>
+        <strong>Langkah 1:</strong> Periksa \(\sum|a_n|\) dengan uji yang sesuai.<br>
+        <strong>Langkah 2:</strong> Jika \(\sum|a_n|\) konvergen &rarr; <strong>konvergen mutlak</strong>. Selesai.<br>
+        <strong>Langkah 3:</strong> Jika \(\sum|a_n|\) divergen, gunakan Uji Leibniz pada \(\sum a_n\):
+        <ul style="margin:4px 0 0 20px">
+          <li>\(b_n\) menurun ke \(0\) &rarr; <strong>konvergen bersyarat</strong></li>
+          <li>\(b_n\) tidak menurun ke \(0\) &rarr; <strong>divergen</strong></li>
+        </ul>
       </div>
 
-      <h3 id="s3-11">3.11 Strategi Pemilihan Uji</h3>
-      <div class="tree-box">
-        <span class="node">Deret \(\sum a_n\)</span>
-        <div class="branch">
-          <span class="node">&#8627; \(\lim a_n \neq 0\)? &rarr; <span class="leaf">Divergen (Kedivergenan)</span></span>
-          <span class="node">&#8627; Bentuk \(1/n^p\)? &rarr; <span class="leaf">Deret-p</span></span>
-          <span class="node">&#8627; Bentuk \(ar^n\)? &rarr; <span class="leaf">Deret Geometri</span></span>
-          <span class="node">&#8627; Fungsi rasional/aljabar? &rarr; <span class="leaf">Banding Limit</span></span>
-          <span class="node">&#8627; Ada \((-1)^n\)? &rarr; <span class="leaf">Leibniz + cek mutlak</span></span>
-          <span class="node">&#8627; Ada faktorial/\(r^n\)? &rarr; <span class="leaf">Uji Rasio</span></span>
-          <span class="node">&#8627; Bentuk \((b_n)^n\)? &rarr; <span class="leaf">Uji Akar</span></span>
-          <span class="node">&#8627; f positif, menurun, integral mudah? &rarr; <span class="leaf">Uji Integral</span></span>
+      <h3 id="s3-11">3.11 Diagram Alir Pemilihan Uji</h3>
+      <p>Mulai dari kotak START, ikuti cabang sesuai bentuk deret Anda:</p>
+      <div class="flowchart">
+
+        <!-- START -->
+        <div class="flow-box start">Deret \(\sum a_n\)</div>
+
+        <div class="flow-connector"></div>
+
+        <!-- Cek 1: Kedivergenan -->
+        <div class="flow-box decision">\(\displaystyle\lim a_n \neq 0\)?</div>
+        <div class="flow-split">
+          <div class="flow-split-arm">
+            <div class="flow-split-label yes">YA</div>
+            <div class="flow-connector"></div>
+            <div class="flow-box result div" style="border-color:var(--red)"><strong style="color:var(--red)">Divergen</strong><br><span style="font-size:0.75rem">(Uji Kedivergenan)</span></div>
+          </div>
+          <div class="flow-split-arm">
+            <div class="flow-split-label no">TIDAK</div>
+            <div class="flow-connector"></div>
+
+            <!-- Cek 2: Bentuk khusus -->
+            <div class="flow-box decision">Bentuk deret khusus?</div>
+            <div class="flow-split">
+              <div class="flow-split-arm">
+                <div class="flow-split-label yes">YA</div>
+                <div class="flow-connector"></div>
+                <div class="flow-branch">
+                  <div class="flow-box test">\(1/n^p\)</div>
+                  <div class="flow-box result konv" style="font-size:0.78rem">\(p>1\): <strong style="color:var(--green)">Konvergen</strong><br>\(p\le1\): <strong style="color:var(--red)">Divergen</strong></div>
+                  <div style="height:8px"></div>
+                  <div class="flow-box test">\(ar^{n-1}\)</div>
+                  <div class="flow-box result konv" style="font-size:0.78rem">\(|r|&lt;1\): <strong style="color:var(--green)">Konvergen</strong><br>\(|r|\ge1\): <strong style="color:var(--red)">Divergen</strong></div>
+                </div>
+              </div>
+              <div class="flow-split-arm">
+                <div class="flow-split-label no">TIDAK</div>
+                <div class="flow-connector"></div>
+
+                <!-- Cek 3: Ganti tanda -->
+                <div class="flow-box decision">Ada \((-1)^n\)?</div>
+                <div class="flow-split">
+                  <div class="flow-split-arm">
+                    <div class="flow-split-label yes">YA</div>
+                    <div class="flow-connector"></div>
+                    <div class="flow-branch">
+                      <div class="flow-box test">Cek \(\sum|a_n|\)</div>
+                      <div class="flow-connector"></div>
+                      <div class="flow-split">
+                        <div class="flow-split-arm">
+                          <div class="flow-split-label yes" style="color:var(--green)">Konv</div>
+                          <div class="flow-box result mutlak"><strong style="color:var(--green)">Konvergen Mutlak</strong></div>
+                        </div>
+                        <div class="flow-split-arm">
+                          <div class="flow-split-label no" style="color:var(--orange)">Div</div>
+                          <div class="flow-connector"></div>
+                          <div class="flow-box test">Uji Leibniz</div>
+                          <div class="flow-connector"></div>
+                          <div class="flow-split">
+                            <div class="flow-split-arm">
+                              <div class="flow-split-label yes" style="font-size:0.6rem">\(b_n\downarrow0\)</div>
+                              <div class="flow-box result syarat"><strong style="color:var(--orange)">Konvergen Bersyarat</strong></div>
+                            </div>
+                            <div class="flow-split-arm">
+                              <div class="flow-split-label no" style="font-size:0.6rem">Tidak</div>
+                              <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flow-split-arm">
+                    <div class="flow-split-label no">TIDAK</div>
+                    <div class="flow-connector"></div>
+
+                    <!-- Cek 4: Faktorial / pangkat -->
+                    <div class="flow-box decision">Ada faktorial atau \(r^n\)?</div>
+                    <div class="flow-split">
+                      <div class="flow-split-arm">
+                        <div class="flow-split-label yes">YA</div>
+                        <div class="flow-box test">Uji Rasio</div>
+                        <div class="flow-connector"></div>
+                        <div class="flow-split">
+                          <div class="flow-split-arm">
+                            <div class="flow-split-label yes" style="color:var(--green)">\(L&lt;1\)</div>
+                            <div class="flow-box result konv"><strong style="color:var(--green)">Konvergen</strong></div>
+                          </div>
+                          <div class="flow-split-arm">
+                            <div class="flow-split-label no" style="color:var(--red)">\(L&gt;1\)</div>
+                            <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flow-split-arm">
+                        <div class="flow-split-label no">TIDAK</div>
+                        <div class="flow-connector"></div>
+
+                        <!-- Cek 5: Bentuk pangkat-n -->
+                        <div class="flow-box decision">Bentuk \((b_n)^n\)?</div>
+                        <div class="flow-split">
+                          <div class="flow-split-arm">
+                            <div class="flow-split-label yes">YA</div>
+                            <div class="flow-box test">Uji Akar</div>
+                            <div class="flow-connector"></div>
+                            <div class="flow-split">
+                              <div class="flow-split-arm">
+                                <div class="flow-split-label yes" style="color:var(--green)">\(L&lt;1\)</div>
+                                <div class="flow-box result konv"><strong style="color:var(--green)">Konvergen</strong></div>
+                              </div>
+                              <div class="flow-split-arm">
+                                <div class="flow-split-label no" style="color:var(--red)">\(L&gt;1\)</div>
+                                <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="flow-split-arm">
+                            <div class="flow-split-label no">TIDAK</div>
+                            <div class="flow-connector"></div>
+
+                            <!-- Cek 6: Integral -->
+                            <div class="flow-box decision">\(f(x)\) positif, menurun, integral mudah?</div>
+                            <div class="flow-split">
+                              <div class="flow-split-arm">
+                                <div class="flow-split-label yes">YA</div>
+                                <div class="flow-box test">Uji Integral</div>
+                                <div class="flow-connector"></div>
+                                <div class="flow-split">
+                                  <div class="flow-split-arm">
+                                    <div class="flow-split-label yes" style="color:var(--green)">Konv</div>
+                                    <div class="flow-box result konv"><strong style="color:var(--green)">Konvergen</strong></div>
+                                  </div>
+                                  <div class="flow-split-arm">
+                                    <div class="flow-split-label no" style="color:var(--red)">Div</div>
+                                    <div class="flow-box result div"><strong style="color:var(--red)">Divergen</strong></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="flow-split-arm">
+                                <div class="flow-split-label no" style="font-size:0.65rem">TIDAK</div>
+                                <div class="flow-connector"></div>
+                                <div class="flow-box result" style="border-color:var(--orange);background:var(--card)">
+                                  <strong style="color:var(--orange)">Banding Langsung</strong><br>
+                                  <span style="font-size:0.72rem">atau coba Banding Limit</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="kesimpulan">
-        Untuk deret ganti tanda: selalu cek konvergensi mutlak dulu, baru Leibniz.
+        Mulai dari uji Kedivergenan (termurah). Untuk deret ganti tanda: selalu cek konvergensi mutlak dulu, baru Leibniz. Jika ragu, Banding Limit adalah pilihan paling fleksibel untuk fungsi rasional.
       </div>
     </section>
 
