@@ -1075,7 +1075,7 @@ th { background: var(--light); }
       <h3 id="s3-2">3.2&ndash;3.9 Tabel Lengkap Uji Deret</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Uji</th><th>Rumus / Kondisi</th><th>Syarat Tambahan</th><th>Kapan Dipakai</th><th>Hindari Jika</th><th>Hasil</th></tr></thead>
+          <thead><tr><th>Uji</th><th>Rumus / Kondisi</th><th>Syarat Tambahan</th><th>Kapan Dipakai</th><th>Hindari Jika</th><th>Contoh Deret</th><th>Hasil</th></tr></thead>
           <tbody>
             <tr>
               <td><strong>Kedivergenan</strong></td>
@@ -1083,6 +1083,7 @@ th { background: var(--light); }
               <td>Tidak ada</td>
               <td>Cek pertama <strong>setiap</strong> deret</td>
               <td>Tidak bisa buktikan konvergensi</td>
+              <td>\(\displaystyle\sum\frac{n}{2n+1}\)</td>
               <td>\(a_n \not\to 0 \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
             </tr>
             <tr>
@@ -1091,6 +1092,7 @@ th { background: var(--light); }
               <td>\(a_n &gt; 0\)</td>
               <td>Bentuk persis \(1/n^p\)</td>
               <td>Pembilang \(\neq 1\) atau penyebut bukan \(n^p\) murni</td>
+              <td>\(\displaystyle\sum\frac{1}{n^2}\)</td>
               <td>\(p &gt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>\(p \le 1 \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
             </tr>
             <tr>
@@ -1099,6 +1101,7 @@ th { background: var(--light); }
               <td>\(a \neq 0\)</td>
               <td>Bentuk \(a + ar + ar^2 + \cdots\)</td>
               <td>Rasio tidak konstan</td>
+              <td>\(\displaystyle\sum\frac{1}{2^{n-1}}\)</td>
               <td>\(|r| &lt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen</strong> ke \(\frac{a}{1-r}\)<br>\(|r| \ge 1 \Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
             </tr>
             <tr>
@@ -1107,6 +1110,7 @@ th { background: var(--light); }
               <td>\(f(x)\) kontinu, positif, <strong>menurun</strong> pada \([1,\infty)\)</td>
               <td>\(a_n = f(n)\) dan \(f\) mudah diintegral</td>
               <td>Faktorial, deret ganti tanda</td>
+              <td>\(\displaystyle\sum\frac{1}{n\ln n}\)</td>
               <td>Integral konvergen \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>Integral divergen \(\Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
             </tr>
             <tr>
@@ -1115,6 +1119,7 @@ th { background: var(--light); }
               <td>\(a_n, b_n \ge 0\)</td>
               <td>Suku positif, pembanding jelas/ mudah</td>
               <td>Deret ganti tanda, pembanding tidak jelas</td>
+              <td>\(\displaystyle\sum\frac{1}{n^2+1}\) (vs \(\frac{1}{n^2}\))</td>
               <td>\(a_n \le b_n,\; \sum b_n\) konv \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>\(a_n \ge b_n,\; \sum b_n\) div \(\Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
             </tr>
             <tr>
@@ -1123,6 +1128,7 @@ th { background: var(--light); }
               <td>\(a_n, b_n &gt; 0\); \(c \in (0,\infty)\)</td>
               <td>Fungsi rasional/aljabar, deret dengan suku dominan jelas</td>
               <td>\((-1)^n\) (modifikasi diperlukan)</td>
+              <td>\(\displaystyle\sum\frac{n}{n^2-5}\) (vs \(\frac{1}{n}\))</td>
               <td>\(0 &lt; c &lt; \infty \Rightarrow\) sama konv/div<br>\(c = 0,\; \sum b_n\) konv \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong><br>\(c = \infty,\; \sum b_n\) div \(\Rightarrow\) <strong style="color:var(--red)">Divergen</strong></td>
             </tr>
             <tr>
@@ -1131,6 +1137,7 @@ th { background: var(--light); }
               <td>\(b_{n+1} \le b_n\) (menurun), \(\lim b_n = 0\)</td>
               <td>Deret dengan faktor \((-1)^n\) atau \((-1)^{n+1}\)</td>
               <td>Bukan deret ganti tanda</td>
+              <td>\(\displaystyle\sum\frac{(-1)^n}{n}\)</td>
               <td>Kedua syarat terpenuhi \(\Rightarrow\) <strong style="color:var(--green)">Konvergen</strong> (bersyarat)</td>
             </tr>
             <tr>
@@ -1139,6 +1146,7 @@ th { background: var(--light); }
               <td>Tidak ada (mutlak)</td>
               <td>Faktorial \(n!\), pangkat \(r^n\), atau kombinasi keduanya</td>
               <td>Fungsi rasional murni (selalu \(L=1\), gagal)</td>
+              <td>\(\displaystyle\sum\frac{2^n}{n!}\)</td>
               <td>\(L &lt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen mutlak</strong><br>\(L &gt; 1\) atau \(\infty \Rightarrow\) <strong style="color:var(--red)">Divergen</strong><br>\(L = 1 \Rightarrow\) <strong style="color:var(--orange)">Gagal</strong></td>
             </tr>
             <tr>
@@ -1147,6 +1155,7 @@ th { background: var(--light); }
               <td>Tidak ada (mutlak)</td>
               <td>Seluruh \(a_n\) berbentuk \((b_n)^n\)</td>
               <td>Bentuk bukan pangkat-n</td>
+              <td>\(\displaystyle\sum\left(\frac{n}{2n+1}\right)^n\)</td>
               <td>\(L &lt; 1 \Rightarrow\) <strong style="color:var(--green)">Konvergen mutlak</strong><br>\(L &gt; 1\) atau \(\infty \Rightarrow\) <strong style="color:var(--red)">Divergen</strong><br>\(L = 1 \Rightarrow\) <strong style="color:var(--orange)">Gagal</strong></td>
             </tr>
           </tbody>
